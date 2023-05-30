@@ -178,6 +178,102 @@ namespace AGMService
             get { return mIdentityNo; }
             set { mIdentityNo=value; } 
         }
+        public int FundCategory_ID
+        {
+            get { return mFundCategory_ID;}
+            set { mFundCategory_ID = value; }
+        }
+        public int MaritalStatus_ID
+        {
+            get { return mMaritalStatus_ID; }
+            set { mMaritalStatus_ID = value; }
+        }
+        public DateTime DateJoinedCompany
+        {
+            get { return mDateJoinedCompany; }
+            set { mDateJoinedCompany = value; }
+        }
+        public DateTime DateJoinedFund
+        {
+            get { return mDateJoinedFund; }
+            set { mDateJoinedFund = value; }
+        }
+        public DateTime PensionableServiceDate
+        {
+            get { return mPensionableServiceDate; }
+            set { mPensionableServiceDate = value; }
+        }
+        public DateTime TranferInDate
+        {
+            get { return mTranferInDate; }
+            set { mTranferInDate = value; }
+        }
+        public int NormalRetAge
+        {
+            get { return mNormalRetAge; }
+            set { mNormalRetAge = value; }
+        }
+
+        public DateTime NormalRetDatemNormalRetDate
+        {
+            get { return mNormalRetDate; }
+            set { mNormalRetDate = value; }
+        }
+        public double AnnualSalary
+        {
+            get { return mAnnualSalary; }
+            set { mAnnualSalary = value; }
+        }
+        public string PassportNo
+        {
+            get { return mPassportNo; }
+            set { mPassportNo = value; }
+        }
+        public string TaxNo
+        {
+            get { return mTaxNo; }
+            set { mTaxNo = value; }
+        }
+        public int Title_Id
+        {
+            get { return mTitle_Id; }
+            set { mTitle_Id = value; }
+        }
+        public int MonthsWaiting
+        {
+            get { return mMonthsWaiting; }
+            set { mMonthsWaiting = value; }
+        }
+        public DateTime DateSuspended
+        {
+            get { return mDateSuspended; }
+            set { mDateSuspended = value; }
+        }
+        public int MonthsSuspended
+        {
+            get { return mMonthsSuspended; }
+            set { mMonthsSuspended = value; }
+        }
+        public DateTime DateUnsuspended
+        {
+            get { return mDateUnsuspended;}
+            set { mDateUnsuspended = value; }
+        }
+        public DateTime DateOfExit
+        {
+            get { return mDateOfExit; }
+            set { mDateOfExit = value; }
+        }
+        public int IntExitCode
+        {
+            get { return mIntExitCode; }
+            set { mIntExitCode = value; }
+        }
+        public int ExitCode
+        {
+            get { return mExitCode; }
+            set { mExitCode = value; }
+        }
 
         public int PortalID
         {

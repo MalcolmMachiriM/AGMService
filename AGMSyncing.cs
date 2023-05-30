@@ -118,6 +118,67 @@ namespace AGMService
 
         #endregion
         #region Properties
+        public string PensionNo
+        {
+            get { return mPensionNo; } 
+            set {mPensionNo=value; } 
+        }
+
+        public string EmployeeReferenceNumber 
+        {
+            get { return mEmployeeReferenceNumber; }
+            set { mEmployeeReferenceNumber = value; } 
+        }
+        public int CompanyNo 
+        {
+            get {return mCompanyNo; }
+            set { mCompanyNo=value; } 
+        }
+
+        public int BranchId 
+        {   get { return mBranchId; }
+            set { mBranchId=value; }
+        }
+        public string CostCentre 
+        {   get {return mCostCentre; }
+            set { mCostCentre = value; } 
+        }
+        public string DepartmentCode
+        {
+            get {return mDepartmentCode; }
+            set { mDepartmentCode = value; }
+        }
+        public string LastName 
+        {
+            get {return mLastName; }
+            set { mLastName=value; } 
+        }
+        public string FirstName
+        {
+            get { return mFirstName; }
+            set { mFirstName = value; }
+        }
+        public DateTime DateOfBirth
+        {
+            get { return mDateOfBirth; }
+            set { mDateOfBirth = value; }
+        }
+        public bool DOBConfirmed
+        {
+            get { return mDOBConfirmed; }
+            set { mDOBConfirmed = value; }
+        }
+        public string Gender_ID
+        {
+            get { return mGender_ID; }
+            set { mGender_ID = value; }
+        }
+        public string IdentityNo 
+        {
+            get { return mIdentityNo; }
+            set { mIdentityNo=value; } 
+        }
+
         public int PortalID
         {
             get { return mPortalID; }

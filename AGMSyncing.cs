@@ -71,10 +71,50 @@ namespace AGMService
         protected int mNormalRetAge;
         protected DateTime mNormalRetDate;
         protected double mAnnualSalary;
-
-
-
-
+        protected string mPassportNo;
+        protected string mTaxNo;
+        protected int mTitle_Id;
+        protected int mMonthsWaiting;
+        protected DateTime mDateSuspended;
+        protected int mMonthsSuspended;
+        protected DateTime mDateUnsuspended;
+        protected DateTime mDateOfExit;
+        protected int mIntExitCode;
+        protected int mExitCode;
+        protected DateTime mChequeReqDateExitCode;
+        protected DateTime mEntryPostedDate;
+        protected DateTime mExitLetterDate;
+        protected int mCompany_ID;
+        protected bool mAuthorised;
+        protected int mAuthorisedBy;
+        protected DateTime mDateAuthorised;
+        protected DateTime mDateModified;
+        protected int mModifiedBy;
+        protected bool mActive;
+        protected int mUploadedBy;
+        protected DateTime mDateUploaded;
+        protected double mStartupMember;
+        protected double mStartupEmployer;
+        protected double mTotalStartup;
+        protected bool mIsDeferred;
+        protected string mComments;
+        protected DateTime mInterBranchTransferDate;
+        protected Guid mmsrepl_tran_version;
+        protected string mSplittedRegNo;
+        protected int mSplittedID;
+        protected int mSplittedCompanyNo;
+        protected double mOldNumber;
+        protected int mIdentityTypeID;
+        protected int mClientTypeID;
+        protected string mMobileNo;
+        protected string mEmailAddress;
+        protected string mLandline;
+        protected bool mAvcsTATUS;
+        protected int mClientID;
+        protected int mFundID;
+        protected int mJobTitleID;
+        protected bool mIsprocessed;
+        protected int mProcessId;
 
         #endregion
         #region Properties

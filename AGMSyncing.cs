@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace AGMService
 {
+    #region enums
     public enum LookUp
     {
         AGMRegisstration = 1,
@@ -16,6 +17,14 @@ namespace AGMService
         AdminResponse = 3,
         AGMUpdate = 4
     }
+
+    public enum MemberUploads
+    {
+        AddedToPortal = 0,
+        ApprovedInAdmin = 1,
+        PortalUpdated=3
+    }
+    #endregion
     public class AGMSyncing
     {
         #region variables
@@ -34,13 +43,38 @@ namespace AGMService
         protected string mComment;
         protected string mActionType;
         protected int mSyncID;
-
         protected Database portalDB;
         protected Database liveDB;
         protected string mConString;
         protected string mLiveConString;
         protected int mPortalID;
         protected string mMsgflg = "";
+        //member uploads vars
+        protected string mPensionNo;
+        protected string mEmployeeReferenceNumber;
+        protected int mCompanyNo;
+        protected int mBranchId;
+        protected string mCostCentre;
+        protected string mDepartmentCode;
+        protected string mLastName;
+        protected string mFirstName;
+        protected DateTime mDateOfBirth;
+        protected bool mDOBConfirmed;
+        protected string mGender_ID;
+        protected string mIdentityNo;
+        protected int mFundCategory_ID;
+        protected int mMaritalStatus_ID;
+        protected DateTime mDateJoinedCompany;
+        protected DateTime mDateJoinedFund;
+        protected DateTime mPensionableServiceDate;
+        protected DateTime mTranferInDate;
+        protected int mNormalRetAge;
+        protected DateTime mNormalRetDate;
+        protected double mAnnualSalary;
+
+
+
+
 
         #endregion
         #region Properties
@@ -422,6 +456,36 @@ namespace AGMService
             db.AddInParameter(cmd, "@PortalID", DbType.Int32, mPortalID);
         }
 
+        #region Member Uploads
+
+        public DataSet GetMemberUploads(int Isprocessed)
+        {
+            try
+            {
+                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Select_MemberUploads");
+                liveDB.AddInParameter(cmd, "@Isprocessed", DbType.Int32, Isprocessed);
+                DataSet ds = liveDB.ExecuteDataSet(cmd);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+
+                    return ds;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                mMsgflg = ex.Message;
+                LogScriptor.WriteErrorLog(mMsgflg);
+                return null;
+            }
+        }
+
+        #endregion
         #endregion
     }
 }

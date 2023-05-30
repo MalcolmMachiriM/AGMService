@@ -30,7 +30,7 @@ namespace AGMService
             LogScriptor.WriteErrorLog("Agm App Service has started");
         }
 
-
+        #region AGM Attendees
         protected void SendUpdatetoAdmin()
         {
             try
@@ -85,7 +85,6 @@ namespace AGMService
             }
         }
 
-
         protected void SyncUpdateToPortal()
         {
             try
@@ -136,6 +135,25 @@ namespace AGMService
                 LogScriptor.WriteErrorLog("Error reported @ sending update to admin system: " + ex.Message);
             }
         }
+        #endregion
+
+        #region member uploads
+
+        protected void GetMemberUploadsPortal()
+        {
+            try
+            {
+                AGMSyncing obj = new AGMSyncing("cn", 1);
+                DataSet ups = obj.GetMemberUploads((int)MemberUploads.AddedToPortal);
+            }
+            catch (Exception ex)
+            {
+
+                LogScriptor.WriteErrorLog(ex.Message);
+            }
+        }
+
+        #endregion
         private void timer1_tick(object Sender, ElapsedEventArgs e)
         {
             try

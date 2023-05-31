@@ -145,6 +145,47 @@ namespace AGMService
             {
                 AGMSyncing obj = new AGMSyncing("cn", 1);
                 DataSet ups = obj.GetMemberUploads((int)MemberUploads.AddedToPortal);
+                if (ups != null)
+                {
+                    foreach (DataRow item in ups.Tables[0].Rows)
+                    {
+                        obj.PensionNo = item["PensionNo"].ToString();
+                        obj.EmployeeReferenceNumber = item["EmployeeReferenceNumber"].ToString();
+                        obj.CompanyNo = Convert.ToInt32(item["CompanyNo"].ToString());
+                        obj.BranchId = Convert.ToInt32(item["BranchId"].ToString());
+                        obj.CostCentre = item["CostCentre"].ToString();
+                        obj.DepartmentCode = item["DepartmentCode"].ToString();
+                        obj.LastName = item["LastName"].ToString();
+                        obj.FirstName = item["FirstName"].ToString();
+                        obj.DateOfBirth = Convert.ToDateTime(item["DateOfBirth"].ToString());
+                        obj.DOBConfirmed = Convert.ToBoolean(item["DOBConfirmed"].ToString());
+                        obj.Gender_ID = item["Gender_ID"].ToString();
+                        obj.IdentityNo = item["IdentityNo"].ToString();
+                        obj.FundCategory_ID = Convert.ToInt32(item["FundCategory_ID"].ToString());
+                        obj.MaritalStatus_ID = Convert.ToInt32(item["MaritalStatus_ID"].ToString());
+                        obj.DateJoinedCompany = Convert.ToDateTime(item["DateJoinedCompany"].ToString());
+                        obj.DateJoinedFund = Convert.ToDateTime(item["DateJoinedFund"].ToString());
+                        obj.PensionableServiceDate = Convert.ToDateTime(item["PensionableServiceDate"].ToString());
+                        obj.TranferInDate = Convert.ToDateTime(item["TranferInDate"].ToString());
+                        obj.NormalRetAge = Convert.ToInt32(item["NormalRetAge"].ToString());
+                        obj.AnnualSalary = Convert.ToDouble(item["AnnualSalary"].ToString());
+                        obj.PassportNo = item["PassportNo"].ToString();
+                        obj.TaxNo = item["TaxNo"].ToString();
+                        obj.Title_Id = Convert.ToInt32(item["Title_Id"].ToString());
+                        obj.MonthsWaiting = Convert.ToInt32(item["MonthsWaiting"].ToString());
+                        obj.DateSuspended = Convert.ToDateTime(item["DateSuspended"].ToString());
+                        obj.DateUnsuspended = Convert.ToDateTime(item["DateUnsuspended"].ToString());
+                        obj.DateOfExit = Convert.ToDateTime(item["DateOfExit"].ToString());
+                        obj.IntExitCode = Convert.ToInt32(item["IntExitCode"].ToString());
+                        obj.ExitCode = Convert.ToInt32(item["ExitCode"].ToString());
+                        obj.TaxNo = item["PensionNo"].ToString();
+                        obj.TaxNo = item["PensionNo"].ToString();
+                        obj.TaxNo = item["PensionNo"].ToString();
+                        obj.TaxNo = item["PensionNo"].ToString();
+                        obj.TaxNo = item["PensionNo"].ToString();
+
+                    }
+                }
             }
             catch (Exception ex)
             {

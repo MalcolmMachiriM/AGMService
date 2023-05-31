@@ -143,7 +143,7 @@ namespace AGMService
         {
             try
             {
-                AGMSyncing obj = new AGMSyncing("cn", 1);
+                SyncingMemberUploads obj = new SyncingMemberUploads("cn", 1);
                 DataSet ups = obj.GetMemberUploads((int)MemberUploads.AddedToPortal);
                 if (ups != null)
                 {
@@ -178,11 +178,33 @@ namespace AGMService
                         obj.DateOfExit = Convert.ToDateTime(item["DateOfExit"].ToString());
                         obj.IntExitCode = Convert.ToInt32(item["IntExitCode"].ToString());
                         obj.ExitCode = Convert.ToInt32(item["ExitCode"].ToString());
-                        obj.TaxNo = item["PensionNo"].ToString();
-                        obj.TaxNo = item["PensionNo"].ToString();
-                        obj.TaxNo = item["PensionNo"].ToString();
-                        obj.TaxNo = item["PensionNo"].ToString();
-                        obj.TaxNo = item["PensionNo"].ToString();
+                        obj.ChequeReqDateExitCode = Convert.ToDateTime(item["ChequeReqDateExitCode"].ToString());
+                        obj.EntryPostedDate = Convert.ToDateTime(item["EntryPostedDate"].ToString());
+                        obj.ExitLetterDate = Convert.ToDateTime(item["ExitLetterDate"].ToString());
+                        obj.Company_ID = Convert.ToInt32(item["Company_ID"].ToString());
+                        obj.Authorised = Convert.ToBoolean(item["Authorised"].ToString());
+                        obj.AuthorisedBy = Convert.ToInt32(item["AuthorisedBy"].ToString());
+                        obj.DateAuthorised = Convert.ToDateTime(item["DateAuthorised"].ToString());
+                        obj.DateModified = Convert.ToDateTime(item["DateModified"].ToString());
+                        obj.ModifiedBy = Convert.ToInt32(item["ModifiedBy"].ToString());
+                        obj.Active = Convert.ToBoolean(item["Active"].ToString());
+                        obj.UploadedBy = Convert.ToInt32(item["UploadedBy"].ToString());
+                        obj.DateUploaded = Convert.ToDateTime(item["DateUploaded"].ToString());
+                        obj.StartupMember = Convert.ToDouble(item["StartupMember"].ToString());
+                        obj.StartupEmployer = Convert.ToDouble(item["StartupEmployer"].ToString());
+                        obj.TotalStartup = Convert.ToDouble(item["TotalStartup"].ToString());
+                        obj.IsDeferred = Convert.ToBoolean(item["IsDeferred"].ToString());
+                        obj.Comments = item["Comments"].ToString();
+                        obj.InterBranchTransferDate = Convert.ToDateTime(item["InterBranchTransferDate"].ToString());
+                        obj.msrepl_tran_version =Guid.Parse(item["msrepl_tran_version"].ToString());
+                        obj.SplittedRegNo = item["SplittedRegNo"].ToString();
+                        obj.OldNumber = Convert.ToDouble(item["OldNumber"].ToString());
+                        obj.IdentityTypeID = Convert.ToInt32(item["IdentityTypeID"].ToString());
+                        obj.ClientTypeID = Convert.ToInt32(item["ClientTypeID"].ToString());
+                        obj.FundID = Convert.ToInt32(item["FundID"].ToString());
+                        obj.JobTitleID = Convert.ToInt32(item["JobTitleID"].ToString());
+                        obj.Isprocessed = Convert.ToBoolean(item["Isprocessed"].ToString());
+                        obj.ProcessId = Convert.ToInt32(item["ProcessId"].ToString());
 
                     }
                 }

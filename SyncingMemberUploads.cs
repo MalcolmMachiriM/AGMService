@@ -429,6 +429,8 @@ namespace AGMService
             set { mProcessId = value; }
         }
         #endregion
+
+        #region Constructor
         public SyncingMemberUploads(string conName, int liveConn)
         {
             mConString = conName;
@@ -438,6 +440,7 @@ namespace AGMService
             //OpenConnection();
 
         }
+        #endregion
 
 
         #region Methods
@@ -445,7 +448,7 @@ namespace AGMService
         {
             try
             {
-                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Select_MemberUploads");
+                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("MemberPortal_ins_service");
                 liveDB.AddInParameter(cmd, "@Isprocessed", DbType.Int32, Isprocessed);
                 DataSet ds = liveDB.ExecuteDataSet(cmd);
 
@@ -466,6 +469,101 @@ namespace AGMService
                 LogScriptor.WriteErrorLog(mMsgflg);
                 return null;
             }
+        }
+
+        public virtual bool SaveMemberUploadsToAdmin()
+        {
+            //Posting New Queries to The Admin DB
+
+            System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("MemberPortal_ins_service");
+
+            GenerateSaveParameters(ref portalDB, ref cmd);
+
+
+            try
+            {
+                DataSet ds = portalDB.ExecuteDataSet(cmd);
+
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    ProcessId = Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
+
+                }
+
+                return true;
+
+
+            }
+            catch (Exception ex)
+            {
+                mMsgflg = ex.Message;
+                return false;
+
+            }
+
+        }
+
+        public virtual void GenerateSaveParameters(ref Database db, ref System.Data.Common.DbCommand cmd)
+        {
+            db.AddInParameter(cmd, "@PensionNo", DbType.String);
+
+            db.AddInParameter(cmd, "@EmployeeReferenceNumber", DbType.Int32, mEmployeeReferenceNumber);
+            db.AddInParameter(cmd, "@CompanyNo", DbType.Int32, mCompanyNo);
+            db.AddInParameter(cmd, "@BranchId", DbType.Int32, mBranchId);
+            db.AddInParameter(cmd, "@CostCentre", DbType.String, mCostCentre);
+            db.AddInParameter(cmd, "@DepartmentCode", DbType.Int32, mDepartmentCode);
+            db.AddInParameter(cmd, "@LastName", DbType.String, mLastName);
+            db.AddInParameter(cmd, "@FirstName", DbType.String, mFirstName);
+            db.AddInParameter(cmd, "@DateOfBirth", DbType.DateTime, mDateOfBirth);
+            db.AddInParameter(cmd, "@DOBConfirmed", DbType.Boolean, mDOBConfirmed);
+            db.AddInParameter(cmd, "@Gender_ID", DbType.String, mGender_ID);
+            db.AddInParameter(cmd, "@IdentityNo", DbType.String, mIdentityNo);
+            db.AddInParameter(cmd, "@FundCategory_ID", DbType.Int32, mFundCategory_ID);
+            db.AddInParameter(cmd, "@IdentityNo", DbType.String, mIdentityNo);
+            db.AddInParameter(cmd, "@MaritalStatus_ID", DbType.Int32, mMaritalStatus_ID);
+            db.AddInParameter(cmd, "@DateJoinedCompany", DbType.DateTime, mDateJoinedCompany);
+            db.AddInParameter(cmd, "@DateJoinedFund", DbType.DateTime, mDateJoinedFund);
+            db.AddInParameter(cmd, "@PensionableServiceDate", DbType.DateTime, mPensionableServiceDate);
+            db.AddInParameter(cmd, "@TranferInDate", DbType.DateTime, mTranferInDate);
+            db.AddInParameter(cmd, "@NormalRetAge", DbType.Int32, mNormalRetAge);
+            db.AddInParameter(cmd, "@AnnualSalary", DbType.Double, mAnnualSalary);
+            db.AddInParameter(cmd, "@PassportNo", DbType.String, mPassportNo);
+            db.AddInParameter(cmd, "@TaxNo", DbType.String, mTaxNo);
+            db.AddInParameter(cmd, "@Title_Id", DbType.Int32, mTitle_Id);
+            db.AddInParameter(cmd, "@MonthsWaiting", DbType.Int32, mMonthsWaiting);
+            db.AddInParameter(cmd, "@DateSuspended", DbType.DateTime, mDateSuspended);
+            db.AddInParameter(cmd, "@DateUnsuspended", DbType.DateTime, mDateUnsuspended);
+            db.AddInParameter(cmd, "@DateOfExit", DbType.DateTime, mDateOfExit);
+            db.AddInParameter(cmd, "@IntExitCode", DbType.Int32, mIntExitCode);
+            db.AddInParameter(cmd, "@ExitCode", DbType.Int32, mExitCode);
+            db.AddInParameter(cmd, "@ChequeReqDateExitCode", DbType.DateTime, mChequeReqDateExitCode);
+            db.AddInParameter(cmd, "@EntryPostedDate", DbType.DateTime, mEntryPostedDate);
+            db.AddInParameter(cmd, "@ExitLetterDate", DbType.DateTime, mExitLetterDate);
+            db.AddInParameter(cmd, "@Company_ID", DbType.Int32, mCompany_ID);
+            db.AddInParameter(cmd, "@Authorised", DbType.Boolean, mAuthorised);
+            db.AddInParameter(cmd, "@AuthorisedBy", DbType.Int32, mAuthorisedBy);
+            db.AddInParameter(cmd, "@DateAuthorised", DbType.DateTime, mDateAuthorised);
+            db.AddInParameter(cmd, "@DateModified", DbType.DateTime, mDateModified);
+            db.AddInParameter(cmd, "@ModifiedBy", DbType.DateTime, mModifiedBy);
+            db.AddInParameter(cmd, "@Active", DbType.DateTime, mActive);
+            db.AddInParameter(cmd, "@UploadedBy", DbType.Int32, mUploadedBy);
+            db.AddInParameter(cmd, "@DateUploaded", DbType.DateTime, mDateUploaded);
+            db.AddInParameter(cmd, "@StartupMember", DbType.Double, mStartupMember);
+            db.AddInParameter(cmd, "@StartupEmployer", DbType.Double, mStartupEmployer);
+            db.AddInParameter(cmd, "@TotalStartup", DbType.Double, mTotalStartup);
+            db.AddInParameter(cmd, "@IsDeferred", DbType.Boolean, mIsDeferred);
+            db.AddInParameter(cmd, "@Comments", DbType.String, mComments);
+            db.AddInParameter(cmd, "@InterBranchTransferDate", DbType.DateTime, mInterBranchTransferDate);
+            db.AddInParameter(cmd, "@msrepl_tran_version", DbType.Guid, mmsrepl_tran_version);
+            db.AddInParameter(cmd, "@SplittedRegNo", DbType.String, mSplittedRegNo);
+            db.AddInParameter(cmd, "@OldNumber", DbType.Double, mOldNumber);
+            db.AddInParameter(cmd, "@IdentityTypeID", DbType.Int32, mIdentityTypeID);
+            db.AddInParameter(cmd, "@ClientTypeID", DbType.Int32, mClientTypeID);
+            db.AddInParameter(cmd, "@FundID", DbType.Int32, mFundID);
+            db.AddInParameter(cmd, "@JobTitleID", DbType.Int32, mJobTitleID);
+            db.AddInParameter(cmd, "@Isprocessed", DbType.Boolean, mIsprocessed);
+            db.AddInParameter(cmd, "@ProcessId", DbType.Int32, mProcessId);
         }
         #endregion
     }

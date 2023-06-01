@@ -444,6 +444,30 @@ namespace AGMService
 
 
         #region Methods
+        protected DataSet ReturnDs(string str)
+        {
+
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = portalDB.ExecuteDataSet(CommandType.Text, str);
+                if (ds != null && ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    return ds;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogScriptor.WriteErrorLog("An Error occured: " + ex.Message);
+                return null;
+            }
+
+        }
         public DataSet GetMemberUploads(int Isprocessed)
         {
             try
@@ -493,7 +517,6 @@ namespace AGMService
 
                 return true;
 
-
             }
             catch (Exception ex)
             {
@@ -507,7 +530,6 @@ namespace AGMService
         public virtual void GenerateSaveParameters(ref Database db, ref System.Data.Common.DbCommand cmd)
         {
             db.AddInParameter(cmd, "@PensionNo", DbType.String);
-
             db.AddInParameter(cmd, "@EmployeeReferenceNumber", DbType.Int32, mEmployeeReferenceNumber);
             db.AddInParameter(cmd, "@CompanyNo", DbType.Int32, mCompanyNo);
             db.AddInParameter(cmd, "@BranchId", DbType.Int32, mBranchId);

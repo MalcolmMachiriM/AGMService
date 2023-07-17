@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using static Microsoft.Practices.EnterpriseLibrary.Common.Configuration.Design.CommonDesignTime;
 
 namespace AGMService
 {
@@ -30,7 +32,7 @@ namespace AGMService
             LogScriptor.WriteErrorLog("Agm App Service has started");
         }
 
-        #region AGM Attendees
+        #region Queries
         protected void SendUpdatetoAdmin()
         {
             try
@@ -39,30 +41,56 @@ namespace AGMService
                 //LogScriptor.WriteErrorLog("SendUpdatetoAdmin");
               
                 AGMSyncing obj = new AGMSyncing("cn", 1);
+                AGMSyncing obj1 = new AGMSyncing("penAdmin", 1);
                 DataSet agmquery = obj.getQueryFromAgmPortal((int)LookUp.AGMRegisstration);//agm query
-                if (agmquery != null)
+                if (agmquery != null && agmquery.Tables.Count > 0 && agmquery.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow item in agmquery.Tables[0].Rows)
                     {
 
                         int RwID = Convert.ToInt32(item["ID"].ToString());
                         obj.ID = 0;
-                        obj.PortalID = Convert.ToInt32(item["PortalID"].ToString());
-                        obj.EventID = Convert.ToInt32(item["EventID"].ToString());
-                        obj.RegistrationID = Convert.ToInt32(item["RegistrationID"].ToString());
-                        //obj.DateCreated = item["DateCreated"].ToString();
-                        obj.isSolved = Convert.ToBoolean(item["isSolved"].ToString());
-                        obj.Query = item["Query"].ToString();
+                        obj.PensionNo = Convert.ToInt32(item["PensionNo"].ToString());
+                        obj.Description = (item["Description"].ToString());
+                        obj.City = item["City"].ToString();
                         obj.QueryType = item["QueryType"].ToString();
+                        obj.ContentType = item["ContentType"].ToString();
+                        obj.Data = Convert.ToByte(item["Data"].ToString());
+                        obj.isSolved = Convert.ToBoolean(item["isSolved"].ToString());
+                        obj.Subject = item["Subject"].ToString();
+                        obj.RegNo = item["RegNo"].ToString();
+                        obj.Type = item["Type"].ToString();
                         obj.Comment = item["Comment"].ToString();
                         obj.ActionType = item["ActionType"].ToString();
+                        obj.DocumentName = item["DocumentName"].ToString();
                         obj.SyncID = 2;
-                        if (obj.SavetoAdmin())
+                        obj.PortalID = Convert.ToInt32(item["PortalID"].ToString());
+
+                        int RwID1 = Convert.ToInt32(item["ID"].ToString());
+                        obj1.ID = 0;
+                        obj1.PensionNo = Convert.ToInt32(item["PensionNo"].ToString());
+                        obj1.Description = (item["Description"].ToString());
+                        obj1.City = item["City"].ToString();
+                        obj1.QueryType = item["QueryType"].ToString();
+                        obj1.ContentType = item["ContentType"].ToString();
+                        obj1.Data = Convert.ToByte(item["Data"].ToString());
+                        obj1.isSolved = Convert.ToBoolean(item["isSolved"].ToString());
+                        obj1.Subject = item["Subject"].ToString();
+                        obj1.RegNo = item["RegNo"].ToString();
+                        obj1.Type = item["Type"].ToString();
+                        obj1.Comment = item["Comment"].ToString();
+                        obj1.ActionType = item["ActionType"].ToString();
+                        obj1.DocumentName = item["DocumentName"].ToString();
+                        obj1.SyncID = 2;
+                        obj1.PortalID = Convert.ToInt32(item["PortalID"].ToString());
+
+
+                        if (obj1.SavetoAdmin())
                         {
                             //2. Update sync status of what has been posted to admin in the portal system
-
+                            
                             LogScriptor.WriteErrorLog("Update Sync status on portal db to 2 for rec id: " + item["PortalID"].ToString());
-                            if (obj.UpdateFromAdmin(RwID, 2)) //Update Portal SYNC status to 2 for admin update
+                            if (obj.UpdateFromAdmin(obj1.PortalID, 2)) //Update Portal SYNC status to 2 for admin update
                             {
                                 LogScriptor.WriteErrorLog("Portal Rec Sync complete");
                             }
@@ -92,23 +120,30 @@ namespace AGMService
                 //1. Updating Portal from admin 
                 
                 AGMSyncing obj = new AGMSyncing("cn", 1);
-                DataSet agmquery = obj.getQueryFromAdmin((int)LookUp.AdminResponse);//admin query
-                if (agmquery != null)
+                AGMSyncing obj1 = new AGMSyncing("cn", 1);
+                DataSet agmquery = obj1.getQueryFromAdmin((int)LookUp.AdminResponse);//admin query
+                if (agmquery != null && agmquery.Tables.Count>0 && agmquery.Tables[0].Rows.Count>0)
                 {
                     foreach (DataRow item in agmquery.Tables[0].Rows)
                     {
 
-                        obj.ID = Convert.ToInt32(item["PortalID"].ToString());
-                        obj.EventID = Convert.ToInt32(item["EventID"].ToString());
-                        obj.RegistrationID = Convert.ToInt32(item["RegistrationID"].ToString());
-                        //obj.DateCreated = item["DateCreated"].ToString();
-                        obj.isSolved = Convert.ToBoolean(item["isSolved"].ToString());
-                        obj.Query = item["Query"].ToString();
-                        obj.QueryType = item["QueryType"].ToString();
-                        obj.Comment = item["Comment"].ToString();
-                        obj.ActionType = item["ActionType"].ToString();
-                        obj.SyncID = 4;
-                        if (obj.SavePortalUpdate())
+                        obj1.ID = Convert.ToInt32(item["PortalID"].ToString());
+                        obj1.PortalID = Convert.ToInt32(item["PortalID"].ToString());
+                        obj1.PensionNo = Convert.ToInt32(item["PensionNo"].ToString());
+                        obj1.Description = (item["Description"].ToString());
+                        obj1.City = item["City"].ToString();
+                        obj1.QueryType = item["QueryType"].ToString();
+                        obj1.ContentType = item["ContentType"].ToString();
+                        obj1.Data = Convert.ToByte(item["Data"].ToString());
+                        obj1.isSolved = Convert.ToBoolean(item["isSolved"].ToString());
+                        obj1.Subject = item["Subject"].ToString();
+                        obj1.RegNo = item["RegNo"].ToString();
+                        obj1.Type = item["Type"].ToString();
+                        obj1.Comment = item["Comment"].ToString();
+                        obj1.ActionType = item["ActionType"].ToString();
+                        obj1.DocumentName = item["DocumentName"].ToString();
+                        obj1.SyncID = 4;
+                        if (obj1.SavePortalUpdate())
                         {
                             //2. Update sync status of what has been update in the admin db to the portal db
                             int RwID = Convert.ToInt32(item["PortalID"].ToString());
@@ -139,6 +174,7 @@ namespace AGMService
 
         #region member uploads
 
+      
         protected void GetMemberUploadsPortal()
         {
             try
@@ -149,6 +185,8 @@ namespace AGMService
                 {
                     foreach (DataRow item in ups.Tables[0].Rows)
                     {
+                        int RwID = Convert.ToInt32(item["ID"].ToString());
+                        obj.PortalID = Convert.ToInt32(item["PortalID"].ToString());
                         obj.PensionNo = item["PensionNo"].ToString();
                         obj.EmployeeReferenceNumber = item["EmployeeReferenceNumber"].ToString();
                         obj.CompanyNo = Convert.ToInt32(item["CompanyNo"].ToString());
@@ -206,6 +244,24 @@ namespace AGMService
                         obj.Isprocessed = Convert.ToBoolean(item["Isprocessed"].ToString());
                         obj.ProcessId = Convert.ToInt32(item["ProcessId"].ToString());
 
+                        if (obj.SaveMemberUploadsToAdmin())
+                        {
+                            //2. Update sync status of what has been posted to admin in the portal system
+
+                            LogScriptor.WriteErrorLog("Update Sync status on portal db to 2 for rec id: " + item["PortalID"].ToString());
+                            if (obj.UpdateFromAdmin(RwID, 2)) //Update Portal SYNC status to 2 for admin update
+                            {
+                                LogScriptor.WriteErrorLog("Portal Members Sync complete");
+                            }
+                            else
+                            {
+                                LogScriptor.WriteErrorLog("Portal Members Sync Error:" + obj.Msgflg);
+                            }
+                        }
+                        else
+                        {
+                            LogScriptor.WriteErrorLog("Error reported @ syncing  portal members to the live db: " + obj.Msgflg);
+                        }
                     }
                 }
             }
@@ -213,6 +269,7 @@ namespace AGMService
             {
 
                 LogScriptor.WriteErrorLog(ex.Message);
+                LogScriptor.WriteErrorLog("Error reported @ sending Member update to admin system: " + ex.Message);
             }
         }
 
@@ -224,6 +281,7 @@ namespace AGMService
                 
                 SendUpdatetoAdmin();
                SyncUpdateToPortal();
+                //GetMemberUploadsPortal();
 
             }
             catch (Exception ex)

@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace AGMService
 {
@@ -27,47 +28,117 @@ namespace AGMService
         private string database;
         private string uid;
         private string password;
-        protected long mID;
         protected long mEventID;
         protected long mRegistrationID;
-        protected string mDateCreated;
-        protected bool misSolved;
         protected string mQuery;
-        protected string mQueryType;
-        protected string mComment;
-        protected string mActionType;
-        protected int mSyncID;
         protected Database portalDB;
         protected Database liveDB;
         protected string mConString;
         protected string mLiveConString;
-        protected int mPortalID;
         protected string mMsgflg = "";
+
+        protected int mID;
+        protected int mPortalID;
+        protected int mPensionNo;
+        protected string mDescription;
+        protected string mCity;
+        protected string mQueryType;
+        protected string mContentType;
+        protected byte mData;
+        protected DateTime mDateCreated;
+        protected bool misSolved;
+        protected string mSubject;
+        protected string mRegNo;
+        protected string mType;
+        protected string mComment;
+        protected string mActionType;
+        protected string mDocumentName;
+        protected int mSyncID;
         //member uploads vars
 
         #endregion
         #region Properties
-        
+
+        public string Description
+        {
+            get { return mDescription; }
+            set { mDescription = value; }
+        }
         public int PortalID
         {
             get { return mPortalID; }
             set { mPortalID = value; }
+        }
+        public string City
+        {
+            get { return mCity; }
+            set { mCity = value; }
+        }
+        public string QueryType
+        {
+            get { return mQueryType; }
+            set { mQueryType = value; }
+        }
+        public string ContentType
+        {
+            get { return mContentType; }
+            set { mContentType = value; }
+        }
+        public byte Data
+        {
+            get { return mData; }
+            set { mData = value; }
+        }
+        public bool isSolved
+        {
+            get { return misSolved; }
+            set { misSolved = value; }
+        }
+        public string Subject
+        {
+            get { return mSubject; }
+            set { mSubject = value; }
+        }
+        public string RegNo
+        {
+            get { return mRegNo; }
+            set { mRegNo = value; }
+        }
+        public string Type
+        {
+            get { return mType; }
+            set { mType = value; }
+        }
+        public string Comment
+        {
+            get { return mComment; }
+            set { mComment = value; }
+        }
+        public string ActionType
+        {
+            get { return mActionType; }
+            set { mActionType = value; }
+        }
+        public string DocumentName
+        {
+            get { return mDocumentName; }
+            set { mDocumentName = value; }
         }
         public int SyncID
         {
             get { return mSyncID; }
             set { mSyncID = value; }
         }
-        public long ID
+        public int ID
         {
             get { return mID; }
             set { mID = value; }
         }
 
-        public long EventID
+        public int PensionNo
         {
-            get { return mEventID; }
-            set { mEventID = value; }
+            get { return mPensionNo; }
+            set { mPensionNo = value; }
         }
 
         public long RegistrationID
@@ -76,43 +147,20 @@ namespace AGMService
             set { mRegistrationID = value; }
         }
 
-        public string DateCreated
+        public DateTime DateCreated
         {
             get { return mDateCreated; }
             set { mDateCreated = value; }
         }
 
-        public bool isSolved
-        {
-            get { return misSolved; }
-            set { misSolved = value; }
-        }
-
+        
         public string Query
         {
             get { return mQuery; }
             set { mQuery = value; }
         }
 
-        public string QueryType
-        {
-            get { return mQueryType; }
-            set { mQueryType = value; }
-        }
-
-        public string Comment
-        {
-            get { return mComment; }
-            set { mComment = value; }
-        }
-
-        public string ActionType
-        {
-            get { return mActionType; }
-            set { mActionType = value; }
-        }
-
-
+       
         public string Msgflg
         {
             get { return mMsgflg; }
@@ -224,7 +272,7 @@ namespace AGMService
         {
             try
             {
-                System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Select_AGMQueries");
+                System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Select_PoralQueries");
                 //System.Data.Common.DbCommand cmd = db.GetStoredProcCommand("Get_Participarting_Employer_Portal");
                 portalDB.AddInParameter(cmd, "@SyncID", DbType.Int32, SyncID);
                 DataSet ds = portalDB.ExecuteDataSet(cmd);
@@ -252,7 +300,7 @@ namespace AGMService
         {
             //Posting New Queries to The Admin DB
 
-            System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Sync_AGMQueries");
+            System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Save_PortalQueries");
 
             GenerateSaveParameters(ref liveDB, ref cmd);
 
@@ -285,7 +333,7 @@ namespace AGMService
         {
             //Posting New Queries to The Admin DB
 
-            System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Sync_AGMQueries");
+            System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Save_PortalQueries");
 
             GenerateSaveParameters(ref portalDB, ref cmd);
 
@@ -318,7 +366,7 @@ namespace AGMService
         {
             try
             {
-                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Select_AGMQueries");
+                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Select_PoralQueries");
                 //System.Data.Common.DbCommand cmd = db.GetStoredProcCommand("Get_Participarting_Employer_Portal");
                 liveDB.AddInParameter(cmd, "@SyncID", DbType.Int32, SyncID);
                 DataSet ds = liveDB.ExecuteDataSet(cmd);
@@ -348,7 +396,7 @@ namespace AGMService
 
 
             System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Update_AGMQueries_Status");
-            liveDB.AddInParameter(cmd, "@QueryID", DbType.Int32, QueryID);
+            liveDB.AddInParameter(cmd, "@PortalID", DbType.Int32, QueryID);
             liveDB.AddInParameter(cmd, "@SyncID", DbType.Int32, StatusID);
 
 
@@ -374,8 +422,8 @@ namespace AGMService
         public bool UpdateFromAdmin(int QueryID, int StatusID)
         {
             //System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Sync_AGMQueries");
-            System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Update_AGMQueries_Status");
-            portalDB.AddInParameter(cmd, "@QueryID", DbType.Int32, QueryID);
+            System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Update_PortalQueries_Status");
+            portalDB.AddInParameter(cmd, "@PortalID", DbType.Int32, QueryID);
             portalDB.AddInParameter(cmd, "@SyncID", DbType.Int32, StatusID);
 
             try
@@ -398,15 +446,16 @@ namespace AGMService
 
 
             mID = ((object)rw["ID"] == DBNull.Value) ? 0 : int.Parse(rw["ID"].ToString());
-            mEventID = ((object)rw["EventID"] == DBNull.Value) ? 0 : int.Parse(rw["EventID"].ToString());
-            mRegistrationID = ((object)rw["RegistrationID"] == DBNull.Value) ? 0 : int.Parse(rw["RegistrationID"].ToString());
-            mDateCreated = ((object)rw["DateCreated"] == DBNull.Value) ? "" : rw["DateCreated"].ToString();
+            mPensionNo = ((object)rw["PensionNo"] == DBNull.Value) ? 0 : int.Parse(rw["PensionNo"].ToString());
+            mRegistrationID = ((object)rw["RegistrationID"] == DBNull.Value) ? 0 : int.Parse(rw["RegistrationID"].ToString()); 
+            mDateCreated = (rw["DateCreated"] == DBNull.Value) ? DateTime.MinValue : (DateTime)rw["DateCreated"];
             misSolved = ((object)rw["isSolved"] == DBNull.Value) ? false : bool.Parse(rw["isSolved"].ToString());
             mQuery = ((object)rw["Query"] == DBNull.Value) ? "" : rw["Query"].ToString();
             mQueryType = ((object)rw["QueryType"] == DBNull.Value) ? "" : rw["QueryType"].ToString();
             mComment = ((object)rw["Comment"] == DBNull.Value) ? "" : rw["Comment"].ToString();
             mActionType = ((object)rw["ActionType"] == DBNull.Value) ? "" : rw["ActionType"].ToString();
             mSyncID = (int)(((object)rw["SyncID"] == DBNull.Value) ? "" : rw["SyncID"]);
+            mDescription = ((object)rw["Description"] == DBNull.Value) ? "" : rw["Description"].ToString();
 
 
         }
@@ -414,16 +463,21 @@ namespace AGMService
         public virtual void GenerateSaveParameters(ref Database db, ref System.Data.Common.DbCommand cmd)
         {
             db.AddInParameter(cmd, "@ID", DbType.Int32, mID);
-            db.AddInParameter(cmd, "@EventID", DbType.Int32, mEventID);
-            db.AddInParameter(cmd, "@RegistrationID", DbType.Int32, mRegistrationID);
-            //db.AddInParameter(cmd, "@DateCreated", DbType.String, mDateCreated);
-            db.AddInParameter(cmd, "@isSolved", DbType.Boolean, misSolved);
-            db.AddInParameter(cmd, "@Query", DbType.String, mQuery);
+            db.AddInParameter(cmd, "@PortalID", DbType.Int32, mPortalID);
+            db.AddInParameter(cmd, "@PensionNo", DbType.Int32, mPensionNo);
+            db.AddInParameter(cmd, "@Description", DbType.String, mDescription);
+            db.AddInParameter(cmd, "@City", DbType.String, mCity);
             db.AddInParameter(cmd, "@QueryType", DbType.String, mQueryType);
+            db.AddInParameter(cmd, "@ContentType", DbType.String, mContentType);
+            db.AddInParameter(cmd, "@Data", DbType.Binary, mData);
+            db.AddInParameter(cmd, "@isSolved", DbType.String, misSolved);
+            db.AddInParameter(cmd, "@Subject", DbType.String, mSubject);
+            db.AddInParameter(cmd, "@RegNo", DbType.String, mRegNo);
+            db.AddInParameter(cmd, "@Type", DbType.String, mType);
             db.AddInParameter(cmd, "@Comment", DbType.String, mComment);
             db.AddInParameter(cmd, "@ActionType", DbType.String, mActionType);
+            db.AddInParameter(cmd, "@DocumentName", DbType.String, mDocumentName);
             db.AddInParameter(cmd, "@SyncID", DbType.Int32, mSyncID);
-            db.AddInParameter(cmd, "@PortalID", DbType.Int32, mPortalID);
         }
 
         #endregion

@@ -24,6 +24,9 @@ namespace AGMService
         protected Database liveDB;
         protected string mConString;
         protected string mLiveConString;
+        protected int mID;
+        protected int mPortalID;
+        protected string mRegNo;
         protected string mPensionNo;
         protected string mEmployeeReferenceNumber;
         protected int mCompanyNo;
@@ -84,8 +87,10 @@ namespace AGMService
         protected string mEmailAddress;
         protected string mLandline;
         protected bool mAvcsTATUS;
+        protected double mAvcMonthly;
         protected int mClientID;
         protected int mFundID;
+        protected int mStatusID;
         protected int mJobTitleID;
         protected bool mIsprocessed;
         protected int mProcessId;
@@ -97,6 +102,31 @@ namespace AGMService
         {
             get { return mMsgflg; }
             set { mMsgflg = value; }
+        }
+        public int ID
+        {
+            get { return mID; }
+            set { mID = value; }
+        }
+        public int PortalID
+        {
+            get { return mPortalID; }
+            set { mPortalID = value; }
+        }
+        public string RegNo
+        {
+            get { return mRegNo; }
+            set { mRegNo = value; }
+        }
+        public double AvcMonthly
+        {
+            get { return mAvcMonthly; }
+            set { mAvcMonthly = value; }
+        }
+        public int StatusID
+        {
+            get { return mStatusID; }
+            set { mStatusID = value; }
         }
         public string PensionNo
         {
@@ -468,12 +498,12 @@ namespace AGMService
             }
 
         }
-        public DataSet GetMemberUploads(int Isprocessed)
+        public DataSet GetMemberUploads(int processId)
         {
             try
             {
-                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("MemberPortal_ins_service");
-                liveDB.AddInParameter(cmd, "@Isprocessed", DbType.Int32, Isprocessed);
+                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Select_PoralMembers");
+                liveDB.AddInParameter(cmd, "@ProcessId", DbType.Int32, processId);
                 DataSet ds = liveDB.ExecuteDataSet(cmd);
 
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -494,6 +524,28 @@ namespace AGMService
                 return null;
             }
         }
+
+        public bool UpdateFromAdmin(int portalID, int StatusID)
+        {
+            //System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Sync_AGMQueries");
+            System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Update_PortalMembers_Status");
+            portalDB.AddInParameter(cmd, "@PortalID", DbType.Int32, portalID);
+            portalDB.AddInParameter(cmd, "@SyncID", DbType.Int32, StatusID);
+
+            try
+            {
+                DataSet ds = portalDB.ExecuteDataSet(cmd);
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                mMsgflg = ex.Message;
+                return false;
+
+            }
+            }
 
         public virtual bool SaveMemberUploadsToAdmin()
         {
@@ -529,6 +581,8 @@ namespace AGMService
 
         public virtual void GenerateSaveParameters(ref Database db, ref System.Data.Common.DbCommand cmd)
         {
+
+            db.AddInParameter(cmd, "@RegNo", DbType.String);
             db.AddInParameter(cmd, "@PensionNo", DbType.String);
             db.AddInParameter(cmd, "@EmployeeReferenceNumber", DbType.Int32, mEmployeeReferenceNumber);
             db.AddInParameter(cmd, "@CompanyNo", DbType.Int32, mCompanyNo);
@@ -581,11 +635,15 @@ namespace AGMService
             db.AddInParameter(cmd, "@SplittedRegNo", DbType.String, mSplittedRegNo);
             db.AddInParameter(cmd, "@OldNumber", DbType.Double, mOldNumber);
             db.AddInParameter(cmd, "@IdentityTypeID", DbType.Int32, mIdentityTypeID);
-            db.AddInParameter(cmd, "@ClientTypeID", DbType.Int32, mClientTypeID);
+            db.AddInParameter(cmd, "@AvcMonthly", DbType.Double, mAvcMonthly);
+            db.AddInParameter(cmd, "@AvcStatus", DbType.Boolean, mAvcsTATUS);
+            db.AddInParameter(cmd, "@ClientID", DbType.Int32, mClientID);
             db.AddInParameter(cmd, "@FundID", DbType.Int32, mFundID);
+            db.AddInParameter(cmd, "@StatusID", DbType.Int32);
             db.AddInParameter(cmd, "@JobTitleID", DbType.Int32, mJobTitleID);
             db.AddInParameter(cmd, "@Isprocessed", DbType.Boolean, mIsprocessed);
             db.AddInParameter(cmd, "@ProcessId", DbType.Int32, mProcessId);
+            db.AddInParameter(cmd, "@mPortalID", DbType.Int32);
         }
         #endregion
     }

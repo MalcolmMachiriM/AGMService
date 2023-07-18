@@ -359,7 +359,7 @@ namespace AGMService
                         {
                             //2. Update sync status of what has been posted to admin in the portal system
 
-                            LogScriptor.WriteErrorLog("Update Sync status on portal db to 2 for rec id: " + item["PortalID"].ToString());
+                            LogScriptor.WriteErrorLog("@ GetMemberUploadsPortal() Update Sync status on portal db to 2 for rec id: " + item["PortalID"].ToString());
                             if (obj1.UpdateFromAdmin(RwID1, 2)) //Update Portal SYNC status to 2 for admin update
                             {
                                 LogScriptor.WriteErrorLog("Portal Members Sync complete");
@@ -371,7 +371,7 @@ namespace AGMService
                         }
                         else
                         {
-                            LogScriptor.WriteErrorLog("Error reported @ syncing  portal members to the live db: " + obj.Msgflg);
+                            LogScriptor.WriteErrorLog("Error reported @ GetMemberUploadsPortal() syncing  portal members to the live db: " + obj.Msgflg);
                         }
                     }
                 }
@@ -380,7 +380,7 @@ namespace AGMService
             {
 
                 LogScriptor.WriteErrorLog(ex.Message);
-                LogScriptor.WriteErrorLog("Error reported @ sending Member update to admin system: " + ex.Message);
+                LogScriptor.WriteErrorLog("Error reported @ GetMemberUploadsPortal() sending Member update to admin system: " + ex.Message);
             }
         }
 
@@ -401,7 +401,6 @@ namespace AGMService
                     {
 
                         int RwID1 = Convert.ToInt32(item["ID"].ToString());
-                        obj1.PortalID = Convert.ToInt32(item["PortalID"].ToString());
                         obj1.PensionNo = item["PensionNo"].ToString();
                         obj1.EmployeeReferenceNumber = item["EmployeeReferenceNumber"].ToString();
                         obj1.CompanyNo = Convert.ToInt32(item["CompanyNo"].ToString());
@@ -459,12 +458,71 @@ namespace AGMService
                         obj1.Isprocessed = Convert.ToBoolean(item["Isprocessed"].ToString());
                         obj1.ProcessId = Convert.ToInt32(item["ProcessId"].ToString());
                         obj1.PortalID = Convert.ToInt32(item["ID"].ToString());
+
+
+                        obj.PensionNo = item["PensionNo"].ToString();
+                        obj.EmployeeReferenceNumber = item["EmployeeReferenceNumber"].ToString();
+                        obj.CompanyNo = Convert.ToInt32(item["CompanyNo"].ToString());
+                        obj.BranchId = Convert.ToInt32(item["BranchId"].ToString());
+                        obj.CostCentre = item["CostCentre"].ToString();
+                        obj.DepartmentCode = item["DepartmentCode"].ToString();
+                        obj.LastName = item["LastName"].ToString();
+                        obj.FirstName = item["FirstName"].ToString();
+                        obj.DateOfBirth = Convert.ToDateTime(item["DateOfBirth"].ToString());
+                        obj.DOBConfirmed = Convert.ToBoolean(item["DOBConfirmed"].ToString());
+                        obj.Gender_ID = item["Gender_ID"].ToString();
+                        obj.IdentityNo = item["IdentityNo"].ToString();
+                        obj.FundCategory_ID = Convert.ToInt32(item["FundCategory_ID"].ToString());
+                        obj.MaritalStatus_ID = Convert.ToInt32(item["MaritalStatus_ID"].ToString());
+                        obj.DateJoinedCompany = Convert.ToDateTime(item["DateJoinedCompany"].ToString());
+                        obj.DateJoinedFund = Convert.ToDateTime(item["DateJoinedFund"].ToString());
+                        obj.PensionableServiceDate = Convert.ToDateTime(item["PensionableServiceDate"].ToString());
+                        obj.TranferInDate = Convert.ToDateTime(item["TranferInDate"].ToString());
+                        obj.NormalRetAge = Convert.ToInt32(item["NormalRetAge"].ToString());
+                        obj.AnnualSalary = Convert.ToDouble(item["AnnualSalary"].ToString());
+                        obj.PassportNo = item["PassportNo"].ToString();
+                        obj.TaxNo = item["TaxNo"].ToString();
+                        obj.Title_Id = Convert.ToInt32(item["Title_Id"].ToString());
+                        obj.MonthsWaiting = Convert.ToInt32(item["MonthsWaiting"].ToString());
+                        obj.DateSuspended = Convert.ToDateTime(item["DateSuspended"].ToString());
+                        obj.DateUnsuspended = Convert.ToDateTime(item["DateUnsuspended"].ToString());
+                        obj.DateOfExit = Convert.ToDateTime(item["DateOfExit"].ToString());
+                        obj.IntExitCode = Convert.ToInt32(item["IntExitCode"].ToString());
+                        obj.ExitCode = Convert.ToInt32(item["ExitCode"].ToString());
+                        obj.ChequeReqDateExitCode = Convert.ToDateTime(item["ChequeReqDateExitCode"].ToString());
+                        obj.EntryPostedDate = Convert.ToDateTime(item["EntryPostedDate"].ToString());
+                        obj.ExitLetterDate = Convert.ToDateTime(item["ExitLetterDate"].ToString());
+                        obj.Company_ID = Convert.ToInt32(item["Company_ID"].ToString());
+                        obj.Authorised = Convert.ToBoolean(item["Authorised"].ToString());
+                        obj.AuthorisedBy = Convert.ToInt32(item["AuthorisedBy"].ToString());
+                        obj.DateAuthorised = Convert.ToDateTime(item["DateAuthorised"].ToString());
+                        obj.DateModified = Convert.ToDateTime(item["DateModified"].ToString());
+                        obj.ModifiedBy = Convert.ToInt32(item["ModifiedBy"].ToString());
+                        obj.Active = Convert.ToBoolean(item["Active"].ToString());
+                        obj.UploadedBy = Convert.ToInt32(item["UploadedBy"].ToString());
+                        obj.DateUploaded = Convert.ToDateTime(item["DateUploaded"].ToString());
+                        obj.StartupMember = Convert.ToDouble(item["StartupMember"].ToString());
+                        obj.StartupEmployer = Convert.ToDouble(item["StartupEmployer"].ToString());
+                        obj.TotalStartup = Convert.ToDouble(item["TotalStartup"].ToString());
+                        obj.IsDeferred = Convert.ToBoolean(item["IsDeferred"].ToString());
+                        obj.Comments = item["Comments"].ToString();
+                        obj.InterBranchTransferDate = Convert.ToDateTime(item["InterBranchTransferDate"].ToString());
+                        obj.msrepl_tran_version = Guid.Parse(item["msrepl_tran_version"].ToString());
+                        obj.SplittedRegNo = item["SplittedRegNo"].ToString();
+                        obj.OldNumber = Convert.ToDouble(item["OldNumber"].ToString());
+                        obj.IdentityTypeID = Convert.ToInt32(item["IdentityTypeID"].ToString());
+                        obj.ClientTypeID = Convert.ToInt32(item["ClientTypeID"].ToString());
+                        obj.FundID = Convert.ToInt32(item["FundID"].ToString());
+                        obj.JobTitleID = Convert.ToInt32(item["JobTitleID"].ToString());
+                        obj.Isprocessed = Convert.ToBoolean(item["Isprocessed"].ToString());
+                        obj.ProcessId = Convert.ToInt32(item["ProcessId"].ToString());
+                        obj.PortalID = Convert.ToInt32(item["ID"].ToString());
                         if (obj.SaveMemberUploadsToAdmin())
                         {
                             //2. Update sync status of what has been update in the admin db to the portal db
                             int RwID = Convert.ToInt32(item["PortalID"].ToString());
-                            LogScriptor.WriteErrorLog("Update Sync status on portal db to 4 for rec id: " + item["PortalID"].ToString());
-                            if (obj.UpdateLiveDBMembers(RwID, 4))
+                            LogScriptor.WriteErrorLog("SyncMemberUpdateToPortal() Update Sync status on portal db to 4 for rec id: " + item["PortalID"].ToString());
+                            if (obj.UpdateLiveDBMembers(RwID, (int)MemberUploads.PortalUpdate))
                             {
                                 LogScriptor.WriteErrorLog("Admin Rec Sync complete");
                             }
@@ -475,7 +533,7 @@ namespace AGMService
                         }
                         else
                         {
-                            LogScriptor.WriteErrorLog("Error reported @ syncing a Admin query to the Portal db: " + obj.Msgflg);
+                            LogScriptor.WriteErrorLog("Error reported @ SyncMemberUpdateToPortal() syncing  Admin Members to the Portal db: " + obj.Msgflg);
                         }
                     }
                 }

@@ -395,7 +395,7 @@ namespace AGMService
         {
 
 
-            System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Update_AGMQueries_Status");
+            System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Update_PortalQueries_Status");
             liveDB.AddInParameter(cmd, "@PortalID", DbType.Int32, QueryID);
             liveDB.AddInParameter(cmd, "@SyncID", DbType.Int32, StatusID);
 
@@ -463,14 +463,13 @@ namespace AGMService
         public virtual void GenerateSaveParameters(ref Database db, ref System.Data.Common.DbCommand cmd)
         {
             db.AddInParameter(cmd, "@ID", DbType.Int32, mID);
-            db.AddInParameter(cmd, "@PortalID", DbType.Int32, mPortalID);
             db.AddInParameter(cmd, "@PensionNo", DbType.Int32, mPensionNo);
             db.AddInParameter(cmd, "@Description", DbType.String, mDescription);
             db.AddInParameter(cmd, "@City", DbType.String, mCity);
             db.AddInParameter(cmd, "@QueryType", DbType.String, mQueryType);
             db.AddInParameter(cmd, "@ContentType", DbType.String, mContentType);
             db.AddInParameter(cmd, "@Data", DbType.Binary, mData);
-            db.AddInParameter(cmd, "@isSolved", DbType.String, misSolved);
+            db.AddInParameter(cmd, "@isSolved", DbType.Boolean, misSolved);
             db.AddInParameter(cmd, "@Subject", DbType.String, mSubject);
             db.AddInParameter(cmd, "@RegNo", DbType.String, mRegNo);
             db.AddInParameter(cmd, "@Type", DbType.String, mType);
@@ -478,6 +477,7 @@ namespace AGMService
             db.AddInParameter(cmd, "@ActionType", DbType.String, mActionType);
             db.AddInParameter(cmd, "@DocumentName", DbType.String, mDocumentName);
             db.AddInParameter(cmd, "@SyncID", DbType.Int32, mSyncID);
+            db.AddInParameter(cmd, "@PortalID", DbType.Int32, mPortalID);
         }
 
         #endregion

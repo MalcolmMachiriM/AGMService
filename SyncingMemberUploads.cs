@@ -12,9 +12,11 @@ namespace AGMService
 
     public enum MemberUploads
     {
-        AddedToPortal = 0,
-        ApprovedInAdmin = 1,
-        PortalUpdated = 3
+        AddedToPortal = 1,
+        AdminUpdated = 2,
+        AdminResponse = 3,
+        PortalUpdate = 4
+
     }
     class SyncingMemberUploads
     {
@@ -350,8 +352,8 @@ namespace AGMService
         }
         public double StartupMember
         {
-            get { return StartupMember; }
-            set { StartupMember = value; }
+            get { return mStartupMember; }
+            set { mStartupMember = value; }
         }
         public double StartupEmployer
         {
@@ -498,6 +500,34 @@ namespace AGMService
             }
 
         }
+
+        public bool UpdateLiveDBMembers(int QueryID, int StatusID)
+        {
+
+
+            System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Update_PortalQueries_Status");
+            liveDB.AddInParameter(cmd, "@PortalID", DbType.Int32, QueryID);
+            liveDB.AddInParameter(cmd, "@SyncID", DbType.Int32, StatusID);
+
+
+
+            try
+            {
+                DataSet ds = liveDB.ExecuteDataSet(cmd);
+
+
+                return true;
+
+
+            }
+            catch (Exception ex)
+            {
+                mMsgflg = ex.Message;
+                return false;
+
+            }
+
+        }
         public DataSet GetMemberUploads(int processId)
         {
             try
@@ -525,12 +555,40 @@ namespace AGMService
             }
         }
 
+        public DataSet getMembersFromAdmin(int processId)
+        {
+            try
+            {
+                System.Data.Common.DbCommand cmd = liveDB.GetStoredProcCommand("sp_Select_PoralMembers");
+                //System.Data.Common.DbCommand cmd = db.GetStoredProcCommand("Get_Participarting_Employer_Portal");
+                liveDB.AddInParameter(cmd, "@ProcessId", DbType.Int32, processId);
+                DataSet ds = liveDB.ExecuteDataSet(cmd);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+
+                    return ds;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                mMsgflg = ex.Message;
+                LogScriptor.WriteErrorLog(mMsgflg);
+                return null;
+            }
+        }
+
         public bool UpdateFromAdmin(int portalID, int StatusID)
         {
             //System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Sync_AGMQueries");
             System.Data.Common.DbCommand cmd = portalDB.GetStoredProcCommand("sp_Update_PortalMembers_Status");
             portalDB.AddInParameter(cmd, "@PortalID", DbType.Int32, portalID);
-            portalDB.AddInParameter(cmd, "@SyncID", DbType.Int32, StatusID);
+            portalDB.AddInParameter(cmd, "@ProcessId", DbType.Int32, StatusID);
 
             try
             {
@@ -643,7 +701,7 @@ namespace AGMService
             db.AddInParameter(cmd, "@JobTitleID", DbType.Int32, mJobTitleID);
             db.AddInParameter(cmd, "@Isprocessed", DbType.Boolean, mIsprocessed);
             db.AddInParameter(cmd, "@ProcessId", DbType.Int32, mProcessId);
-            db.AddInParameter(cmd, "@mPortalID", DbType.Int32);
+            db.AddInParameter(cmd, "@PortalID", DbType.Int32);
         }
         #endregion
     }
